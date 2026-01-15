@@ -1,0 +1,78 @@
+{
+  config,
+  pkgs,
+  ...
+}: let
+  chronyNtsTimer = "daily";
+
+  # The hardened Chrony config
+  chronyConf = pkgs.writeText "chrony.conf" ''
+    # Copyright GrapheneOS
+    #
+    server time.cloudflare.com iburst nts
+    server ntppool1.time.nl iburst nts
+    server nts.netnod.se iburst nts
+    server ptbtime1.ptb.de iburst nts
+    server time.dfm.dk iburst nts
+    server time.cifelli.xyz iburst nts
+    minsources 3
+    authselectmode require
+    # EF
+    dscp 46
+    driftfile /var/lib/chrony/drift
+    dumpdir /var/lib/chrony
+    ntsdumpdir /var/lib/chrony
+    leapsectz /usr/share/zoneinfo/leap-seconds.list
+    makestep 1.0 3
+    rtconutc
+    rtsync
+    cmdport 0
+    noclientlog
+  '';
+
+  # Service that writes the config and reloads Chrony
+  chronyNtsService = {
+    description = "Write hardened Chrony config with NTS and reload";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStartPre = pkgs.writeShellScript "write-chrony-nts.sh" ''
+        set -euo pipefail
+
+        # Ensure dirs exist
+        mkdir -p /var/lib/chrony /etc
+
+        # Automatically write the config
+        ${pkgs.coreutils}/bin/install -m 0644 ${chronyConf} /etc/chrony.conf
+
+        # Reload (or restart if reload fails)
+        ${pkgs.systemd}/bin/systemctl try-reload-or-restart chronyd
+      '';
+    };
+    wantedBy = ["multi-user.target"];
+  };
+
+  # Timer that triggers the service
+  chronyNtsTimerConfig = {
+    description = "Timer to keep hardened Chrony+NTS config applied";
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = chronyNtsTimer;
+      Persistent = true; # run missed jobs after reboot
+      RandomizedDelaySec = "5m"; # jitter
+    };
+  };
+in {
+  services.chrony.enable = true;
+  services.timesyncd.enable = false; # we're using Chrony
+
+  systemd.timers."chrony-nts" = chronyNtsTimerConfig;
+  systemd.services."chrony-nts" = chronyNtsService;
+
+  systemd.services."chrony-nts-at-boot" =
+    chronyNtsService
+    // {
+      description = "Apply hardened Chrony+NTS config at boot";
+      after = ["chronyd.service"];
+      wantedBy = ["multi-user.target"];
+    };
+}

@@ -1,0 +1,46 @@
+{
+  description = "NixOS configuration";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    ghostty.url = "github:ghostty-org/ghostty";
+    helix.url = "github:helix-editor/helix";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    nvf.url = "github:notashelf/nvf";
+    wallpapers = {
+      url = "github:saylesss88/wallpapers2";
+      flake = false;
+    };
+  };
+
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    treefmt-nix,
+    ...
+  } @ inputs: let
+    mkSystem = system: host:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/${host}/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.jr = ./hosts/${host}/home.nix;
+            home-manager.extraSpecialArgs = {inherit inputs;};
+          }
+        ];
+      };
+  in {
+    nixosConfigurations = {
+      magic = mkSystem "x86_64-linux" "magic";
+      default = mkSystem "aarch64-linux" "default";
+    };
+  };
+}

@@ -1,0 +1,13 @@
+{...}: {
+  imports = [
+    ./helix
+    ./yazi.nix
+    ./nvim.nix
+    # ./nh.nix
+    ./git.nix
+    ./zsh.nix
+    ./jj.nix
+    ./starship.nix
+    ./caffeine.nix
+  ];
+}

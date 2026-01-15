@@ -1,0 +1,17 @@
+{...}: {
+  imports = [
+    # ./drivers
+    ./hardening
+    ./greetd.nix
+    ./fonts.nix
+    ./thunar.nix
+    ./envVars.nix
+    ./utils.nix
+    ./chrony.nix
+    ./flatpak.nix
+    ./boot.nix
+    # ./nix.nix
+    # ./zram.nix
+    # ./keyd.nix
+  ];
+}
