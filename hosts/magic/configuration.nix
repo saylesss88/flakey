@@ -84,7 +84,7 @@
     extraGroups = [ "wheel" ];
     group = "jr";
     # initialHashedPassword = "$y$j9T$l6BO3cf.TgxpnADw.4J5h/$3VlemmABgXtfcmYBFB7/gdxephephravjqF/YG/PQAA";
-    hashedPasswordFile = "/etc/nixos-secrets/passwords/jr";
+    hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
   };
 
   users.mutableUsers = false;
