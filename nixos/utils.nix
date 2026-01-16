@@ -3,11 +3,9 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   cfg = config.custom.utils;
-in
-{
+in {
   options.custom.utils = {
     enable = lib.mkEnableOption "Enable custom utils Package Set";
   };

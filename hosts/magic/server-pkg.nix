@@ -7,7 +7,6 @@
   makeWrapper,
   src,
 }:
-
 rustPlatform.buildRustPackage {
   pname = "nix-repl-server";
   version = "0.1.0";
@@ -29,13 +28,13 @@ rustPlatform.buildRustPackage {
     pkg-config
     makeWrapper
   ];
-  buildInputs = [ openssl ];
+  buildInputs = [openssl];
 
   doCheck = false;
 
   # Ensure 'nix' is available in the path if your binary calls Command::new("nix")
   postInstall = ''
-    wrapProgram $out/bin/nix-repl-server --prefix PATH : ${lib.makeBinPath [ nix ]}
+    wrapProgram $out/bin/nix-repl-server --prefix PATH : ${lib.makeBinPath [nix]}
   '';
 
   meta = with lib; {

@@ -1,10 +1,8 @@
 {
   pkgs,
   lib,
-  config,
   ...
-}:
-{
+}: {
   users.users.jr = {
     isNormalUser = true;
     description = "jr";
@@ -35,7 +33,7 @@
   users.users.admin = {
     isNormalUser = true;
     description = "admin account";
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     group = "admin";
     packages = with pkgs; [
       #  thunderbird
@@ -43,5 +41,5 @@
     hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
   };
 
-  users.groups.admin = { };
+  users.groups.admin = {};
 }

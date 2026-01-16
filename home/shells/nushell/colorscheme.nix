@@ -5,8 +5,16 @@
   ...
 }:
 let
-  xargb-color = hex: alpha: builtins.replaceStrings [ "#" ] [ "0x${alpha}" ] hex;
-  convert-color = hex: if xargb then xargb-color hex alpha else hex;
+  convert-color =
+    color:
+    let
+      hex = builtins.replaceStrings [ "#" ] [ "" ] color;
+    in
+    if xargb then
+      "0x${alpha}${hex}" # e.g. 0xff111726
+    else
+      "#${hex}"; # e.g. #111726
+
   default-set =
     if (colorscheme == "tokyonight_night") then
       {
@@ -31,9 +39,9 @@ let
       { };
 in
 default-set
-# |> builtins.attrNames
-# |> builtins.map (key: {
-#   name = key;
-#   value = convert-color default-set.${key};
-# })
-# |> builtins.listToAttrs
+|> builtins.attrNames
+|> builtins.map (key: {
+  name = key;
+  value = convert-color default-set.${key};
+})
+|> builtins.listToAttrs

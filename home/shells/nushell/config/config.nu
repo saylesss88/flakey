@@ -1,13 +1,13 @@
 # env-vars
-const FZF_PATH = "~/flake/home/shells/nushell/config/fzf.nu"
-const SESH_PATH = "~/flake/home/shells/nushell/config/sesh.nu"
-const THEME_PATH = "~/flake/home/shells/nushell/themes/tokyonight_night.nu"
-const ATUIN_PATH = "~/flake/home/shells/nushell/config/atuin.nu"
-const NIX_PATH = "~/flake/home/shells/nushell/config/nix.nu"
-const ZOXIDE_PATH = "~/flake/home/shells/nushell/config/zoxide.nu"
-const AUTO_PAIR = "~/flake/home/shells/nushell/config/auto-pair.nu"
-const MATCHIT = "~/flake/home/shells/nushell/config/matchit.nu"
-const EXTRACTOR = "~/flake/home/shells/nushell/config/scripts/extractor.nu"
+const FZF_PATH = "~/flakey/home/shells/nushell/config/fzf.nu"
+const SESH_PATH = "~/flakey/home/shells/nushell/config/sesh.nu"
+const THEME_PATH = "~/flakey/home/shells/nushell/themes/tokyonight_night.nu"
+const ATUIN_PATH = "~/flakey/home/shells/nushell/config/atuin.nu"
+const NIX_PATH = "~/flakey/home/shells/nushell/config/nix.nu"
+const ZOXIDE_PATH = "~/flakey/home/shells/nushell/config/zoxide.nu"
+const AUTO_PAIR = "~/flakey/home/shells/nushell/config/auto-pair.nu"
+const MATCHIT = "~/flakey/home/shells/nushell/config/matchit.nu"
+const EXTRACTOR = "~/flakey/home/shells/nushell/config/scripts/extractor.nu"
 source ~/.config/nushell/style.nu
 $env.PATH = $env.PATH
 | split row (char esep)
@@ -27,7 +27,7 @@ $env.RUST_BACKTRACE = 1
 $env.XDG_CONFIG_HOME = ($env.HOME | path join ".config")
 $env.TOPIARY_LANGUAGE_DIR = ($env.XDG_CONFIG_HOME | path join topiary languages)
 # Add your flake_path to NIX_PATH
-let flake_path = ($env.HOME | path join "flake")
+let flake_path = ($env.HOME | path join "flakey")
 # $env.NIX_PATH = ($env.NIX_PATH | append ":flaked=flake:" | append $flake_path)
 # $env.TOPIARY_LANGUAGE_DIR = (path join $env.XDG_CONFIG_HOME "topiary" "languages")
 

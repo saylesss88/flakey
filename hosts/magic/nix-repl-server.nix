@@ -4,9 +4,7 @@
   pkgs,
   inputs,
   ...
-}:
-
-let
+}: let
   cfg = config.custom.nix-repl-server;
 
   serverSource = inputs.mdbook-nix-repl + "/server";
@@ -37,9 +35,9 @@ let
         "${pkgs.tini}/bin/tini"
         "--"
       ];
-      Cmd = [ "${serverPkg}/bin/nix-repl-server" ];
+      Cmd = ["${serverPkg}/bin/nix-repl-server"];
       ExposedPorts = {
-        "8080/tcp" = { };
+        "8080/tcp" = {};
       };
       # Important: Container must see 0.0.0.0 to receive traffic from host port mapping
       Env = [
@@ -49,8 +47,7 @@ let
       ];
     };
   };
-in
-{
+in {
   options.custom.nix-repl-server = {
     enable = lib.mkEnableOption "nix-repl-server container";
     port = lib.mkOption {
@@ -77,10 +74,10 @@ in
       # This effectively "loads" the image into Podman on boot
       imageFile = nixReplImage;
 
-      ports = [ "127.0.0.1:${toString cfg.port}:8080" ];
+      ports = ["127.0.0.1:${toString cfg.port}:8080"];
 
       # Inject the token safely at runtime (not in Nix store)
-      environmentFiles = [ cfg.tokenFile ];
+      environmentFiles = [cfg.tokenFile];
 
       extraOptions = [
         "--cap-drop=ALL"

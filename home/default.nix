@@ -2,8 +2,7 @@
   myLib,
   lib,
   ...
-}:
-{
+}: {
   imports = myLib.scanPaths ./.;
 
   options.custom.magic.hm = {

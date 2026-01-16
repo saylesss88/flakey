@@ -2,8 +2,7 @@
   lib,
   homeManagerModules,
   ...
-}:
-{
+}: {
   home.username = "jr";
   home.homeDirectory = lib.mkDefault "/home/jr";
   home.stateVersion = "25.05";
