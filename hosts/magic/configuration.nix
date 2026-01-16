@@ -58,6 +58,7 @@
     pkgs.helix
     pkgs.nh
   ];
+  programs.zsh.enable = true;
 
   custom = {
     magic.enable = true;
@@ -81,9 +82,9 @@
 
   users.users.jr = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    # extraGroups = [ "wheel" ];
     group = "jr";
-    # initialHashedPassword = "$y$j9T$l6BO3cf.TgxpnADw.4J5h/$3VlemmABgXtfcmYBFB7/gdxephephravjqF/YG/PQAA";
+    shell = pkgs.zsh;
     hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
   };
 
@@ -98,7 +99,8 @@
     description = "admin acct";
     extraGroups = [ "wheel" ];
     group = "admin";
-    initialHashedPassword = "$y$j9T$l6BO3cf.TgxpnADw.4J5h/$3VlemmABgXtfcmYBFB7/gdxephephravjqF/YG/PQAA";
+    # initialHashedPassword = "$y$j9T$l6BO3cf.TgxpnADw.4J5h/$3VlemmABgXtfcmYBFB7/gdxephephravjqF/YG/PQAA";
+    hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
   };
 
   users.groups.admin = { };

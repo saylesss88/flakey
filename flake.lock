@@ -19,7 +19,7 @@
     "hagezi": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-3dS64eA92C/YAvIQtFF9RScNt1LDS0ESnyG/v+3b+B8=",
+        "narHash": "sha256-MMPltZ8xJJimmRiejvxIYaUvZnenKcJR6faEJLYw1rw=",
         "type": "file",
         "url": "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro-onlydomains.txt"
       },
@@ -35,11 +35,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768512489,
-        "narHash": "sha256-jZi945d3e6DYhrw3K5Pew+QaL3qSgq3O6xiVaEVLgXs=",
+        "lastModified": 1768530555,
+        "narHash": "sha256-EBXKDho4t1YSgodAL6C8M3UTm8MGMZNQ9rQnceR5+6c=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "bba859cd85b90dd9e4e6fd44b2af4aa64ae801a1",
+        "rev": "d21bee5abf9fb4a42b2fa7728bf671f8bb246ba6",
         "type": "github"
       },
       "original": {
@@ -119,7 +119,7 @@
     "oisd": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-J5pfdZCQGwowHHOrV+onBO7RKJnchisCzevAWK07w68=",
+        "narHash": "sha256-gegBkz9xeJAq4vtZE8Up9PN5qfMSMHEJcLHNUSLvmSk=",
         "type": "file",
         "url": "https://big.oisd.nl/domainswild"
       },
