@@ -1,4 +1,4 @@
-const MY_LIB_PATH = "~/flake/home/shells/nushell/config/lib.nu"
+const MY_LIB_PATH = "~/flakey/home/shells/nushell/config/lib.nu"
 const fzf_carapace_extra_args = [--exit-0 --read0 --ansi --no-tmux --height=30%]
 const fzf_window_first_column_max_length = 25
 const fd_default_args = [--hidden --exclude .git --exclude .cache --max-depth 9]

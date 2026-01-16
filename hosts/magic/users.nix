@@ -1,8 +1,10 @@
 {
   pkgs,
   lib,
+  config,
   ...
-}: {
+}:
+{
   users.users.jr = {
     isNormalUser = true;
     description = "jr";
@@ -23,23 +25,25 @@
       #  thunderbird
     ];
     shell = pkgs.zsh;
-    hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
+    hashedPasswordFile = config.sops.secrets.password_hash.path;
+    # hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
   };
   users.mutableUsers = false;
 
   users.groups.jr = {
-    # gid = lib.mkForce 1000;
+    gid = lib.mkForce 1000;
   };
   users.users.admin = {
     isNormalUser = true;
     description = "admin account";
-    extraGroups = ["wheel"];
+    extraGroups = [ "wheel" ];
     group = "admin";
     packages = with pkgs; [
       #  thunderbird
     ];
-    hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
+    hashedPasswordFile = config.sops.secrets.password_hash.path;
+    # hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
   };
 
-  users.groups.admin = {};
+  users.groups.admin = { };
 }

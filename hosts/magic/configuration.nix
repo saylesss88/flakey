@@ -5,11 +5,15 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./users.nix
+    ./impermanence.nix
+    ./sops.nix
+
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -23,20 +27,20 @@
     efi.efiSysMountPoint = "/boot/efi";
   };
 
-  boot.supportedFilesystems = ["zfs"];
+  boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.devNodes = "/dev/";
 
-  boot.kernelModules = ["kvm-amd"];
+  boot.kernelModules = [ "kvm-amd" ];
 
   networking.hostId = "db129a2c";
 
   boot.initrd.systemd.enable = false;
 
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zpool import -N -f rpool
-    zfs rollback -r rpool/local/root@blank
-    zpool export rpool
-  '';
+  # boot.initrd.postDeviceCommands = lib.mkAfter ''
+  #   zpool import -N -f rpool
+  #   zfs rollback -r rpool/local/root@blank
+  #   zpool export rpool
+  # '';
   # boot.initrd.systemd.services.rollback = {
   #   description = "Rollback ZFS root";
   #   wantedBy = [ "initrd.target" ];

@@ -207,6 +207,9 @@ def jj-squash [] {
   jj bookmark set main
 }
 
+def fr [] {
+    run0 nixos-rebuild switch --flake $"/home/($env.USER)/flakey#((hostname))"
+}
 # def jj-squash [] {
 #   let msg = (input "Enter commit message: ")
 #   jj squash -r @
