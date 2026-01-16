@@ -36,12 +36,22 @@
   boot.initrd.systemd.enable = false;
 
   boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zpool import -N -f rpool
     zfs rollback -r rpool/local/root@blank
+    zpool export rpool
   '';
   # boot.initrd.systemd.services.rollback = {
   #   description = "Rollback ZFS root";
-  #   wantedBy =
-  # }
+  #   wantedBy = [ "initrd.target" ];
+  #   # after = [ "zfs-import-rpool.service" ];
+  #   after = [ "zfs-import-stack.target" ];
+  #   before = [ "sysroot.mount" ];
+  #   path = [ config.boot.zfs.package ];
+  #   serviceConfig.Type = "oneshot";
+  #   script = ''
+  #     zfs rollback -r rpool/local/root@blank
+  #   '';
+  # };
 
   environment.systemPackages = [
     pkgs.git

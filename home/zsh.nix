@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -59,7 +60,7 @@
                bindkey "^Z" Resume
 
                fr() {
-                 run0 nixos-rebuild switch --flake "/home/$USER/flake3#"$(hostname)
+                 run0 nixos-rebuild switch --flake "/home/$USER/flakey#"$(hostname)
                }
 
 
