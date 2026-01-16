@@ -11,7 +11,7 @@ _: {
         owner = "root";
         group = "root";
         mode = "0400";
-        neededForUsers = true;
+        neededForUsers = true; # ====REQUIRED====#
       };
       "github_deploy_key_ed25519" = {
         sopsFile = ../../secrets/github-deploy-key.yaml;
