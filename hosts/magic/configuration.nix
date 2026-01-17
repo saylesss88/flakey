@@ -12,7 +12,7 @@
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
-    # ./sops.nix
+    ./sops.nix
 
   ];
 

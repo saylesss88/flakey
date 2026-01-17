@@ -1,7 +1,7 @@
 # .sops.yaml
 keys:
   # Your personal age public key (from age-keygen -y ~/.config/sops/age/keys.txt)
-  - &personal_age_key age1qavp7mlfz3lffjwy420xv97cg2k4gqjjy75ehcay98m5r2qelvts75y43w
+  - &personal_age_key age1lneh9m9kc26g3jj4c5macuks2q5su8pe4dgekcrptn80mf7yfdasugkjw4
   # You can also use PGP keys if you prefer, but age is often simpler
   # - &personal_pgp_key 0xDEADBEEFCAFE0123
 
