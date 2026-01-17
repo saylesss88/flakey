@@ -12,7 +12,7 @@
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
-    ./sops.nix
+    # ./sops.nix
 
   ];
 
@@ -24,15 +24,24 @@
       editor = false;
     };
     efi.canTouchEfiVariables = true;
-    efi.efiSysMountPoint = "/boot/efi";
+    efi.efiSysMountPoint = "/boot";
+  };
+
+  boot.initrd.luks.devices = {
+    cryptroot = {
+      device = "/dev/disk/by-uuid/5b456090-e698-411a-b0cc-b83e12863453";
+      allowDiscards = true;
+      preLVM = true;
+    };
   };
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.devNodes = "/dev/";
 
   boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelParams = [ "console=tty1" ];
 
-  networking.hostId = "db129a2c";
+  networking.hostId = "73c38cf1";
 
   boot.initrd.systemd.enable = false;
 

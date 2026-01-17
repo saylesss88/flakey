@@ -25,8 +25,9 @@
       #  thunderbird
     ];
     shell = pkgs.zsh;
-    hashedPasswordFile = config.sops.secrets.password_hash.path;
+    # hashedPasswordFile = config.sops.secrets.password_hash.path;
     # hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
+    initialHashedPassword = "$y$j9T$ZW.A1DUj7YzdU4Yox716/1$/OqV9ek.vdnNWfxY6IGkQe0jTWFOahgZDdf1.d21EL6";
   };
   users.mutableUsers = false;
 
@@ -41,8 +42,9 @@
     packages = with pkgs; [
       #  thunderbird
     ];
-    hashedPasswordFile = config.sops.secrets.password_hash.path;
+    # hashedPasswordFile = config.sops.secrets.password_hash.path;
     # hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
+    initialHashedPassword = "$y$j9T$ZW.A1DUj7YzdU4Yox716/1$/OqV9ek.vdnNWfxY6IGkQe0jTWFOahgZDdf1.d21EL6";
   };
 
   users.groups.admin = { };
