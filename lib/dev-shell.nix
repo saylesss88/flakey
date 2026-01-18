@@ -13,7 +13,7 @@ in
     name = "nixos-dev";
     packages = with pkgs; [
       # Nix tools
-      nixfmt-rfc-style # Formatter
+      nixfmt # Formatter
       deadnix # Dead code detection
       nixd # Nix language server
       nil # Alternative Nix language server

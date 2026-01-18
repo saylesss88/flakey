@@ -1,25 +1,20 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{
-  lib,
-  pkgs,
-  ...
-}:
-{
+{pkgs, ...}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
     # ./sops.nix
-
   ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     systemd-boot = {
       enable = true;
+      # enable = lib.mkForce false;
       consoleMode = "max";
       editor = false;
       configurationLimit = 25;
@@ -27,19 +22,23 @@
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
   };
+  # boot.lanzaboote = {
+  #   enable = true;
+  #   pkiBundle = "/var/lib/sbctl";
+  # };
 
   # avoid race conditions with systemd
   systemd.services.zfs-mount.enable = false;
 
   boot.initrd.luks.devices = {
     cryptroot = {
-      device = "/dev/disk/by-uuid/5b456090-e698-411a-b0cc-b83e12863453";
+      device = "/dev/disk/by-uuid/a122e783-4aab-48de-9142-7c393c977e81";
       allowDiscards = true;
       preLVM = true;
     };
   };
 
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = ["zfs"];
   boot.zfs.devNodes = "/dev/";
   services.zfs = {
     autoScrub.enable = true;
@@ -48,30 +47,12 @@
     # autoSnapshot = true;
   };
 
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.kernelParams = [ "console=tty1" ];
+  boot.kernelModules = ["kvm-amd"];
+  boot.kernelParams = ["console=tty1"];
 
-  networking.hostId = "73c38cf1";
+  networking.hostId = "2060abea";
 
   boot.initrd.systemd.enable = false;
-
-  # boot.initrd.postDeviceCommands = lib.mkAfter ''
-  #   zpool import -N -f rpool
-  #   zfs rollback -r rpool/local/root@blank
-  #   zpool export rpool
-  # '';
-  # boot.initrd.systemd.services.rollback = {
-  #   description = "Rollback ZFS root";
-  #   wantedBy = [ "initrd.target" ];
-  #   # after = [ "zfs-import-rpool.service" ];
-  #   after = [ "zfs-import-stack.target" ];
-  #   before = [ "sysroot.mount" ];
-  #   path = [ config.boot.zfs.package ];
-  #   serviceConfig.Type = "oneshot";
-  #   script = ''
-  #     zfs rollback -r rpool/local/root@blank
-  #   '';
-  # };
 
   environment.systemPackages = [
     pkgs.git

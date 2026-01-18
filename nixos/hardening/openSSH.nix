@@ -2,11 +2,9 @@
   config,
   lib,
   ...
-}:
-let
+}: let
   cfg = config.custom.security.openssh;
-in
-{
+in {
   # ──────────────────────────────────────────────────────────────
   # Public option
   # ──────────────────────────────────────────────────────────────
@@ -40,7 +38,7 @@ in
 
       openssh = {
         enable = true;
-        ports = [ 2222 ];
+        ports = [2222];
 
         settings = {
           PasswordAuthentication = false;
@@ -53,7 +51,7 @@ in
           MaxSessions = 2;
           ClientAliveInterval = 300;
           ClientAliveCountMax = 0;
-          AllowUsers = [ "jr" ];
+          AllowUsers = ["jr"];
           TCPKeepAlive = false;
           AllowTcpForwarding = false;
           AllowAgentForwarding = false;

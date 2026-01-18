@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+_: {
   home.packages = [
     # inputs.zen-browser.packages."${pkgs.system}".default
     # pkgs.python3
@@ -29,7 +29,7 @@
     # })
     # (import ../scripts/web-search.nix {inherit pkgs;})
     # (import ../scripts/rofi-launcher.nix {inherit pkgs;})
-    (import ../scripts/screenshootin.nix {inherit pkgs;})
+    # (import ../scripts/screenshootin.nix {inherit pkgs;})
     # (import ../scripts/list-hypr-bindings.nix {
     #   inherit pkgs;
     #   inherit host;

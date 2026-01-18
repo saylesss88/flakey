@@ -1,10 +1,8 @@
 {
   pkgs,
   lib,
-  config,
   ...
-}:
-{
+}: {
   users.users.jr = {
     isNormalUser = true;
     description = "jr";
@@ -27,7 +25,7 @@
     shell = pkgs.zsh;
     # hashedPasswordFile = config.sops.secrets.password_hash.path;
     # hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
-    initialHashedPassword = "$y$j9T$ZW.A1DUj7YzdU4Yox716/1$/OqV9ek.vdnNWfxY6IGkQe0jTWFOahgZDdf1.d21EL6";
+    initialHashedPassword = "$y$j9T$j7zw6zck7t1O7m8sdkkRi0$.3NZqK2GmKZnivtDph8.aq/G08IUOF4ghhpwecTCTZ9";
   };
   users.mutableUsers = false;
 
@@ -37,15 +35,15 @@
   users.users.admin = {
     isNormalUser = true;
     description = "admin account";
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     group = "admin";
     packages = with pkgs; [
       #  thunderbird
     ];
     # hashedPasswordFile = config.sops.secrets.password_hash.path;
+    initialHashedPassword = "$y$j9T$j7zw6zck7t1O7m8sdkkRi0$.3NZqK2GmKZnivtDph8.aq/G08IUOF4ghhpwecTCTZ9";
     # hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
-    initialHashedPassword = "$y$j9T$ZW.A1DUj7YzdU4Yox716/1$/OqV9ek.vdnNWfxY6IGkQe0jTWFOahgZDdf1.d21EL6";
   };
 
-  users.groups.admin = { };
+  users.groups.admin = {};
 }

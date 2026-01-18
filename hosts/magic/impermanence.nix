@@ -1,6 +1,4 @@
-{ config, lib, ... }:
-{
-
+{lib, ...}: {
   # boot.initrd.postDeviceCommands = lib.mkAfter ''
   #   zpool import -N -f rpool
   #   zfs rollback -r rpool/local/root@blank
