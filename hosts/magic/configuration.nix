@@ -12,7 +12,7 @@
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
-    ./sops.nix
+    # ./sops.nix
 
   ];
 
@@ -22,10 +22,14 @@
       enable = true;
       consoleMode = "max";
       editor = false;
+      configurationLimit = 25;
     };
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
   };
+
+  # avoid race conditions with systemd
+  systemd.services.zfs-mount.enable = false;
 
   boot.initrd.luks.devices = {
     cryptroot = {
@@ -37,6 +41,12 @@
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.devNodes = "/dev/";
+  services.zfs = {
+    autoScrub.enable = true;
+    # periodically runs `zpool trim`
+    trim.enable = true;
+    # autoSnapshot = true;
+  };
 
   boot.kernelModules = [ "kvm-amd" ];
   boot.kernelParams = [ "console=tty1" ];

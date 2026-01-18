@@ -1,10 +1,13 @@
 { config, lib, ... }:
 {
 
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zpool import -N -f rpool
+  # boot.initrd.postDeviceCommands = lib.mkAfter ''
+  #   zpool import -N -f rpool
+  #   zfs rollback -r rpool/local/root@blank
+  #   zpool export rpool
+  # '';
+  boot.initrd.postMountCommands = lib.mkAfter ''
     zfs rollback -r rpool/local/root@blank
-    zpool export rpool
   '';
 
   # environment.persistence."/persist" = {
