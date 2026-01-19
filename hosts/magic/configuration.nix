@@ -16,12 +16,11 @@
     # ./sops.nix
     inputs.lanzaboote.nixosModules.lanzaboote
   ];
-  # nixpkgs.overlays = [
-  #   (_final: prev: {
-  #     lanzaboote =
-  #       inputs.nixpkgs-stable.legacyPackages.${pkgs.system}.lanzaboote or prev.lanzaboote;
-  #   })
-  # ];
+  environment.etc."nix/nix.custom.conf".text = ''
+    extra-substituters = https://cache.flakehub.com
+    extra-trusted-public-keys = cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM=
+    warn-dirty = false  # Silence flakey warnings
+  '';
 
   # programs.nix.enable = true;
   # Use the systemd-boot EFI boot loader.
@@ -65,7 +64,13 @@
   };
 
   boot.kernelModules = [ "kvm-amd" ];
-  boot.kernelParams = [ "console=tty1" ];
+  # boot.kernelParams = ["console=tty1"];
+  console.font = "ter-v16n"; # Or "Lat2-Terminus16" for virtio-serial
+  console.packages = with pkgs; [ terminus_font ];
+  boot.kernelParams = [
+    "console=ttyS0,115200n8"
+    "console=tty0"
+  ];
 
   networking.hostId = "2060abea";
 

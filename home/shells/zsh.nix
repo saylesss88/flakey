@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -171,6 +172,7 @@
       psc = "ps xawf -eo pid,user,cgroup,args";
       j = "just";
       sudo = "run0";
+      fmt = "git ls-files -z '*.nix' | xargs -0 -r nix fmt";
     };
   };
 }
