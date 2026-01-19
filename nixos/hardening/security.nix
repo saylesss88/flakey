@@ -2,11 +2,9 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   cfg = config.custom.security.security;
-in
-{
+in {
   options.custom.security.security.enable = lib.mkEnableOption "Enable security module";
   config = lib.mkIf cfg.enable {
     boot.kernel.sysctl = {
@@ -182,7 +180,7 @@ in
       PASS_WARN_AGE 14
       ENCRYPT_METHOD SHA256
     '';
-    users.groups.netdev = { };
+    users.groups.netdev = {};
     services = {
       # gnome.gnome-keyring.enable = true;
       userborn.enable = false;

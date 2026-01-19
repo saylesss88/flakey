@@ -1,3 +1,3 @@
 _: {
-  programs.neovim.enable = false;
+  programs.neovim.enable = true;
 }

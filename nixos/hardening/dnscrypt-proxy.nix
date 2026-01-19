@@ -4,8 +4,7 @@
   lib,
   inputs,
   ...
-}:
-let
+}: let
   blocklist_base = builtins.readFile inputs.oisd;
   extraBlocklist = builtins.readFile inputs.hagezi;
   blocklist_txt = pkgs.writeText "blocklist.txt" ''
@@ -15,19 +14,15 @@ let
   hasIPv6Internet = true;
   StateDirName = "dnscrypt-proxy"; # Used for systemd StateDirectory
   StatePath = "/var/lib/${StateDirName}";
-in
-{
+in {
   networking = {
-    nameservers = [
-      "127.0.0.1"
-      "::1"
-    ];
+    nameservers = ["127.0.0.1" "::1"];
     networkmanager.dns = "none";
   };
 
   services.resolved.enable = lib.mkForce false;
 
-  services.dnscrypt-proxy2 = {
+  services.dnscrypt-proxy = {
     enable = true;
     settings = {
       sources.public-resolvers = {
@@ -66,10 +61,7 @@ in
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
       };
 
-      server_names = [
-        "odoh-cloudflare"
-        "odoh-snowstorm"
-      ];
+      server_names = ["odoh-cloudflare" "odoh-snowstorm"];
 
       # This creates the [anonymized_dns] section in dnscrypt-proxy.toml
       anonymized_dns = {
@@ -77,11 +69,11 @@ in
         routes = [
           {
             server_name = "odoh-snowstorm";
-            via = [ "odohrelay-crypto-sx" ];
+            via = ["odohrelay-crypto-sx"];
           }
           {
             server_name = "odoh-cloudflare";
-            via = [ "odohrelay-crypto-sx" ];
+            via = ["odohrelay-crypto-sx"];
           }
         ];
       };

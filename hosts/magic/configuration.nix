@@ -1,13 +1,24 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{ pkgs, lib, config, ... }: {
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
     # ./sops.nix
+  ];
+  nixpkgs.overlays = [
+    (_final: prev: {
+      lanzaboote =
+        inputs.nixpkgs-stable.legacyPackages.${pkgs.system}.lanzaboote or prev.lanzaboote;
+    })
   ];
 
   # programs.nix.enable = true;
@@ -28,6 +39,9 @@
     pkiBundle = "/var/lib/sbctl";
   };
 
+  services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true;
+
   # avoid race conditions with systemd
   systemd.services.zfs-mount.enable = false;
 
@@ -39,7 +53,7 @@
     };
   };
 
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = ["zfs"];
   boot.zfs.devNodes = "/dev/";
   services.zfs = {
     autoScrub.enable = true;
@@ -48,14 +62,14 @@
     # autoSnapshot = true;
   };
 
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.kernelParams = [ "console=tty1" ];
+  boot.kernelModules = ["kvm-amd"];
+  boot.kernelParams = ["console=tty1"];
 
   networking.hostId = "2060abea";
 
   boot.initrd.systemd.enable = false;
 
-  environment.systemPackages = [ pkgs.git pkgs.helix pkgs.nh ];
+  environment.systemPackages = [pkgs.git pkgs.helix pkgs.nh];
   programs.zsh.enable = true;
 
   custom = {

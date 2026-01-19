@@ -4,12 +4,10 @@
   lib,
   # username,
   ...
-}:
-let
+}: let
   cfg = config.custom.greetd;
   username = "jr";
-in
-{
+in {
   options.custom.greetd = {
     enable = lib.mkEnableOption "Enable greetd Module";
   };
@@ -32,7 +30,7 @@ in
         default_session = {
           user = username;
           # command = "${pkgs.tuigreet}/bin/tuigreet --remember --remember-user-session --time --cmd --theme \"container=black;input=lightBlue;prompt=green;greet=magenta;border=blue\" Hyprland";
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --remember-user-session --time --theme 'container=black;input=lightBlue;prompt=green;greet=magenta;border=blue' --cmd sway";
+          command = "${pkgs.tuigreet}/bin/tuigreet --remember --remember-user-session --time --theme 'container=black;input=lightBlue;prompt=green;greet=magenta;border=blue' --cmd sway";
         };
       };
     };
