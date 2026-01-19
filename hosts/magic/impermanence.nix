@@ -1,4 +1,4 @@
-{lib, ...}: {
+{ lib, ... }: {
   # boot.initrd.postDeviceCommands = lib.mkAfter ''
   #   zpool import -N -f rpool
   #   zfs rollback -r rpool/local/root@blank
@@ -8,9 +8,10 @@
     zfs rollback -r rpool/local/root@blank
   '';
 
-  # environment.persistence."/persist" = {
-  #   files = [
-  # "/etc/ssh/ssh_host_ed25519_key"
-  # "/etc/ssh/ssh_host_ed25519_key.pub"
-  # ];
+  environment.persistence."/persist" = { directories = [ "/var/lib/sbctl" "/var/lib/nixos" ]; };
+  fileSystems."/persist" = {
+    device = "rpool/safe/persist";
+    fsType = "zfs";
+    neededForBoot = true;
+  };
 }

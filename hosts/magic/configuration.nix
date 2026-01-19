@@ -1,7 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{pkgs, ...}: {
+{ pkgs, lib, config, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -10,22 +10,23 @@
     # ./sops.nix
   ];
 
+  # programs.nix.enable = true;
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     systemd-boot = {
-      enable = true;
-      # enable = lib.mkForce false;
-      consoleMode = "max";
-      editor = false;
-      configurationLimit = 25;
+      # enable = true;
+      enable = lib.mkForce false;
+      # consoleMode = "max";
+      # editor = false;
+      # configurationLimit = 25;
     };
-    efi.canTouchEfiVariables = true;
-    efi.efiSysMountPoint = "/boot";
+    # efi.canTouchEfiVariables = true;
+    # efi.efiSysMountPoint = "/boot";
   };
-  # boot.lanzaboote = {
-  #   enable = true;
-  #   pkiBundle = "/var/lib/sbctl";
-  # };
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/var/lib/sbctl";
+  };
 
   # avoid race conditions with systemd
   systemd.services.zfs-mount.enable = false;
@@ -38,7 +39,7 @@
     };
   };
 
-  boot.supportedFilesystems = ["zfs"];
+  boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.devNodes = "/dev/";
   services.zfs = {
     autoScrub.enable = true;
@@ -47,18 +48,14 @@
     # autoSnapshot = true;
   };
 
-  boot.kernelModules = ["kvm-amd"];
-  boot.kernelParams = ["console=tty1"];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelParams = [ "console=tty1" ];
 
   networking.hostId = "2060abea";
 
   boot.initrd.systemd.enable = false;
 
-  environment.systemPackages = [
-    pkgs.git
-    pkgs.helix
-    pkgs.nh
-  ];
+  environment.systemPackages = [ pkgs.git pkgs.helix pkgs.nh ];
   programs.zsh.enable = true;
 
   custom = {
