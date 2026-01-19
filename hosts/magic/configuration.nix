@@ -6,20 +6,22 @@
   lib,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
     # ./sops.nix
+    inputs.lanzaboote.nixosModules.lanzaboote
   ];
-  nixpkgs.overlays = [
-    (_final: prev: {
-      lanzaboote =
-        inputs.nixpkgs-stable.legacyPackages.${pkgs.system}.lanzaboote or prev.lanzaboote;
-    })
-  ];
+  # nixpkgs.overlays = [
+  #   (_final: prev: {
+  #     lanzaboote =
+  #       inputs.nixpkgs-stable.legacyPackages.${pkgs.system}.lanzaboote or prev.lanzaboote;
+  #   })
+  # ];
 
   # programs.nix.enable = true;
   # Use the systemd-boot EFI boot loader.
@@ -53,7 +55,7 @@
     };
   };
 
-  boot.supportedFilesystems = ["zfs"];
+  boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.devNodes = "/dev/";
   services.zfs = {
     autoScrub.enable = true;
@@ -62,14 +64,18 @@
     # autoSnapshot = true;
   };
 
-  boot.kernelModules = ["kvm-amd"];
-  boot.kernelParams = ["console=tty1"];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelParams = [ "console=tty1" ];
 
   networking.hostId = "2060abea";
 
   boot.initrd.systemd.enable = false;
 
-  environment.systemPackages = [pkgs.git pkgs.helix pkgs.nh];
+  environment.systemPackages = [
+    pkgs.git
+    pkgs.helix
+    pkgs.nh
+  ];
   programs.zsh.enable = true;
 
   custom = {
