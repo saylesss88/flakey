@@ -176,7 +176,7 @@
     "hagezi": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-tTvsW9m7zigNFB9TrpE1/hi4Xs+TTn17PKD49pDNiwE=",
+        "narHash": "sha256-FRLtQnABwLrV1BrQ5v5Y1f43XzTca47SY1xW5zhBTPk=",
         "type": "file",
         "url": "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro-onlydomains.txt"
       },
@@ -417,7 +417,7 @@
     "oisd": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-hhOI+3rKOYyzAuVfJnM1JLyanXn5rZ7BvlEfMyW+6Qk=",
+        "narHash": "sha256-jLVX8L4O3jPeNqBLnprcnK7qBnXBrNRBSEyYBMH2fMg=",
         "type": "file",
         "url": "https://big.oisd.nl/domainswild"
       },
