@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   options = {
     custom.gpg = {
       enable = lib.mkEnableOption {
@@ -24,9 +25,9 @@
       };
 
       ## We will put our keygrip here
-      gpg-agent.sshKeys = ["F173704A3FE799A8697DD315656A4F09EFC29BF1"];
+      gpg-agent.sshKeys = [ "03898959F91764116D9A85BA44F99C78083C8767" ];
     };
-    home.packages = [pkgs.gnupg];
+    home.packages = [ pkgs.gnupg ];
     programs = {
       gpg = {
         ## Enable GnuPG
@@ -35,8 +36,8 @@
         settings = {
           # Default/trusted key ID (helpful with throw-keyids)
           # Example, you will put your own keyid here
-          default-key = "Ox24B6727309C896F3";
-          trusted-key = "Ox25A11516EBB4F979";
+          default-key = "9D62D98676267CDF";
+          trusted-key = "9D62D98676267CDF";
           # https://github.com/drduh/config/blob/master/gpg.conf
           # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration-Options.html
           # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Esoteric-Options.html

@@ -1,32 +1,53 @@
+{ ... }:
 {
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-{
-  services.firewalld = {
+  networking.nftables = {
     enable = true;
-    # minimalConfig = false; # Enable zones/interfaces
+
+    ruleset = ''
+      table inet filter {
+        chain output {
+          type filter hook output priority 0; policy accept;
+
+          # Allow localhost DNS for dnscrypt-proxy2
+          ip daddr 127.0.0.1 udp dport 53 accept
+          ip6 daddr ::1 udp dport 53 accept
+          ip daddr 127.0.0.1 tcp dport 53 accept
+          ip6 daddr ::1 tcp dport 53 accept
+
+          # Allow dnscrypt-proxy2 to talk to upstream servers
+          # Replace <DNSCRYPT-UID> with:
+          # ps -o uid,user,pid,cmd -C dnscrypt-proxy
+          meta skuid 62582 udp dport { 443, 853 } accept
+          meta skuid 62582 tcp dport { 443, 853 } accept
+
+          # Block all other outbound DNS
+          udp dport { 53, 853 } drop
+          tcp dport { 53, 853 } drop
+        }
+      }
+    '';
   };
-  networking = {
-    nftables.enable = true;
-    firewall.backend = "nftables";
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      # Ports open for inbound connections.
+      # Limit these to reduce the attack surface.
+
+      # 22
+      # SSH – Keep open only if you need remote access.
+      # To change the SSH port in NixOS:
+      # services.openssh.ports = [ 2222 ];
+      # Update this list to match the new port.
+
+      # 53  # DNS – Only if running a public DNS server.
+      # 80  # HTTP – Only if hosting a website.
+      # 443 # HTTPS – Only if hosting a secure website.
+    ];
+    allowedUDPPorts = [
+      # Ports open for inbound UDP traffic.
+      # Most NixOS workstations won't need any here.
+
+      # 53 # DNS – Only if running a public DNS server.
+    ];
   };
-  services.firewalld.zones = {
-    whonix-external = {
-      target = "DROP";
-      interfaces = [ "Whonix-External" ];
-      services = [
-        "dhcp"
-        "tor-server"
-      ];
-    };
-    whonix-internal.interfaces = [ "Whonix-Internal" ];
-  };
-  networking.firewall.allowedTCPPorts = [
-    5900
-    5901
-  ]; # Spice/VNC
-  networking.firewall.trustedInterfaces = [ "virbr0" ];
 }
