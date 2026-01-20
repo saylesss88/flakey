@@ -10,7 +10,7 @@ export def extract [name: path] {
     ['deb' 'ar x']
     ['gz' 'gunzip']
     ['pkg' 'pkgutil --expand']
-    ['rar' 'unrar x']
+    ['rar' 'unrar-free x']
     ['tar' 'tar xvf']
     ['xz' 'xz --decompress']
     ['zip|war|jar|nupkg' 'unzip']

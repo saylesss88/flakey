@@ -3,9 +3,11 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   cfg = config.custom.utils;
-in {
+in
+{
   options.custom.utils = {
     enable = lib.mkEnableOption "Enable custom utils Package Set";
   };
@@ -87,7 +89,7 @@ in {
       # pkgs.clinfo
       pkgs.efibootmgr # manage EFI boot entries
       pkgs.inotify-tools # utility for monitoring file system events
-      pkgs.unrar # tool to extract RAR archives
+      pkgs.unrar-free # tool to extract RAR archives
       pkgs.duf # Disk usage/free utility
       pkgs.ncdu # Disk usage analyzer
       pkgs.pciutils # Inspect PCI devices
