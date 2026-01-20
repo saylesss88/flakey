@@ -7,21 +7,26 @@
 {
   services.firewalld = {
     enable = true;
-    minimalConfig = false; # Enable zones/interfaces
+    # minimalConfig = false; # Enable zones/interfaces
   };
-  networking.firewall.backend = "firewalld";
-  virtualisation.libvirtd.firewallBackend = "firewalld"; # Auto-zone virbr0/vnetX
+  networking = {
+    nftables.enable = true;
+    firewall.backend = "nftables";
+  };
   services.firewalld.zones = {
-    "whonix-external" = {
-      interfaces = [ "Whonix-External" ]; # Host-facing
-      defaultService = "tor-server"; # Allow Tor onion services
-      trustedInterfaces = [ ]; # Strict inbound
+    whonix-external = {
+      target = "DROP";
+      interfaces = [ "Whonix-External" ];
+      services = [
+        "dhcp"
+        "tor-server"
+      ];
     };
-    "whonix-internal" = {
-      interfaces = [ "Whonix-Internal" ];
-      defaultService = "dhcp"; # VM-to-Gateway only
-      masquerade = false; # No NAT leaks
-    };
+    whonix-internal.interfaces = [ "Whonix-Internal" ];
   };
-
+  networking.firewall.allowedTCPPorts = [
+    5900
+    5901
+  ]; # Spice/VNC
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
 }

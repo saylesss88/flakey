@@ -15,8 +15,8 @@
       ];
     };
     extraGroups = lib.mkForce [
-      "networkmanager"
-      "podman"
+      "libvirtd"
+      "kvm"
     ];
     group = "jr";
     ignoreShellProgramCheck = true;

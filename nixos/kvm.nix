@@ -17,9 +17,9 @@
     # libvirtd daemon
     libvirtd = {
       enable = true;
-      qemuOvmf.enable = true;
       qemu = {
-        verity = true;
+        package = pkgs.qemu_kvm;
+        # runAsRoot = true;
         # enables a TPM emulator
         swtpm.enable = true;
       };
