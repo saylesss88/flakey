@@ -22,18 +22,24 @@
     warn-dirty = false  # Silence flakey warnings
   '';
 
-  # programs.nix.enable = true;
+  hardware.graphics.enable = true;
   # Use the systemd-boot EFI boot loader.
-  boot.loader = {
-    systemd-boot = {
-      # enable = true;
-      enable = lib.mkForce false;
-      # consoleMode = "max";
-      # editor = false;
-      # configurationLimit = 25;
+  boot = {
+    tmp = {
+      useTmpfs = true;
+      tmpfsSize = "50%";
     };
-    # efi.canTouchEfiVariables = true;
-    # efi.efiSysMountPoint = "/boot";
+    loader = {
+      systemd-boot = {
+        # enable = true;
+        enable = lib.mkForce false;
+        # consoleMode = "max";
+        # editor = false;
+        # configurationLimit = 25;
+      };
+      # efi.canTouchEfiVariables = true;
+      # efi.efiSysMountPoint = "/boot";
+    };
   };
   boot.lanzaboote = {
     enable = true;

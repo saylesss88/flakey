@@ -17,6 +17,7 @@
     pkgs.vlock
   ];
 
+  environment.memoryAllocator.provider = "graphene-hardened-light";
   networking.firewall.enable = true;
   # sudo.enable = false;
   security = {
