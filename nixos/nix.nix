@@ -22,7 +22,7 @@ in
           "nix-command"
           "flakes"
           "pipe-operators"
-          "structured-attrs"
+          # "structured-attrs"
           #"pipe-operator" # lix
         ];
         # Number of simultaneous derivation builds

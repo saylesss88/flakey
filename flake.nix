@@ -3,9 +3,9 @@
 
   inputs = {
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "gh://flakehub.com/NixOS/nixpkgs/~0.1";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
-    home-manager.url = "gh://flakehub.com/nix-community/home-manager/~0.1";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    home-manager.url = "github:nix-community/home-manager"; # Stable, flakehub-free
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # home-manager.url = "github:nix-community/home-manager";
     # home-manager.inputs.nixpkgs.follows = "nixpkgs";
