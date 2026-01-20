@@ -66,7 +66,7 @@
         import nixpkgs {
           inherit system;
           config = {
-            allowUnfree = true;
+            allowUnfree = false;
           };
         }
       );
