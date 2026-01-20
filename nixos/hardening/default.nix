@@ -11,6 +11,7 @@
     ./openSSH.nix
     ./auditd.nix
     ./dnscrypt-proxy.nix
+    ./firewall.nix
     # ./flatpak.nix
   ];
   environment.systemPackages = [
