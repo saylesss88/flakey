@@ -73,7 +73,7 @@
        # else
        #   export GPG_TTY="$TTY"
        # fi
-       export SOPS_AGE_KEY_FILE=/persist/.config/sops/age/keys.txt
+       export SOPS_AGE_KEY_FILE=/home/jr/.config/sops/age/keys.txt
        export WLR_NO_HARDWARE_CURSORS=1
 
       export GPG_TTY=$(tty)

@@ -1,9 +1,9 @@
 # .sops.yaml
 keys:
   # Your personal age public key (from age-keygen -y ~/.config/sops/age/keys.txt)
-  - &personal_age_key age1lneh9m9kc26g3jj4c5macuks2q5su8pe4dgekcrptn80mf7yfdasugkjw4
-  # You can also use PGP keys if you prefer, but age is often simpler
-  # - &personal_pgp_key 0xDEADBEEFCAFE0123
+  - &personal_age_key age1lnle23vz202hxsufa2724zrmn43km5gs0r9luyge297jlvu8yedshr95vq
+    # You can also use PGP keys if you prefer, but age is often simpler
+    # - &personal_pgp_key 0xDEADBEEFCAFE0123
 
 creation_rules:
   # This rule applies to any file named 'secrets.yaml' directly in the 'secrets/' directory

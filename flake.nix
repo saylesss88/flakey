@@ -2,15 +2,16 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "gh://flakehub.com/NixOS/nixpkgs/~0.1";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "gh://flakehub.com/nix-community/home-manager/~0.1";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    # home-manager.url = "github:nix-community/home-manager";
+    # home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # flatpaks.url = "github:in-a-dil-emma/declarative-flatpak/latest";
-    # sops-nix.url = "github:Mic92/sops-nix";
-    # sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    #
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     systems.url = "github:nix-systems/default-linux";
     lanzaboote = {
@@ -117,7 +118,7 @@
           nixosModules # add all modules from ./nixos
           caches
           # inputs.lanzaboote.nixosModules.lanzaboote
-          # inputs.sops-nix.nixosModules.sops
+          inputs.sops-nix.nixosModules.sops
           inputs.determinate.nixosModules.default
           {
             home-manager.useGlobalPkgs = true;

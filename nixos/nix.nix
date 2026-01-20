@@ -3,9 +3,11 @@
   config,
   inputs,
   ...
-}: let
+}:
+let
   cfg = config.custom.nix;
-in {
+in
+{
   options.custom.nix = {
     enable = lib.mkEnableOption "Enable the Nix Module";
   };
@@ -20,6 +22,7 @@ in {
           "nix-command"
           "flakes"
           "pipe-operators"
+          "structured-attrs"
           #"pipe-operator" # lix
         ];
         # Number of simultaneous derivation builds

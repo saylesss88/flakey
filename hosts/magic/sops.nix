@@ -2,8 +2,8 @@ _: {
   sops = {
     defaultSopsFile = ../../.sops.yaml; # Or the correct path to your .sops.yaml
     # Don't mix sshKeyPaths and keyFile
-    age.sshKeyPaths = [];
-    age.keyFile = "/persist/.config/sops/age/keys.txt";
+    age.sshKeyPaths = [ ];
+    age.keyFile = "/home/jr/.config/sops/age/keys.txt";
 
     secrets = {
       "password_hash" = {

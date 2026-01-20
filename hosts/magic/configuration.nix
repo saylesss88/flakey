@@ -13,7 +13,7 @@
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
-    # ./sops.nix
+    ./sops.nix
     inputs.lanzaboote.nixosModules.lanzaboote
   ];
   environment.etc."nix/nix.custom.conf".text = ''
