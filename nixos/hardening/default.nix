@@ -2,7 +2,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ./security.nix
     ./systemd.nix
@@ -21,6 +22,7 @@
   security = {
     polkit.enable = true;
   };
+  xdg.portal.wlr.enable = false;
 
   # Ensure software hasn't been tampered with
   nix.settings.require-sigs = true;

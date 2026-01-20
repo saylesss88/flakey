@@ -2,10 +2,15 @@
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   mod = "Mod4";
-in {
-  imports = [./keybinds.nix ./fuzzel.nix];
+in
+{
+  imports = [
+    ./keybinds.nix
+    ./fuzzel.nix
+  ];
 
   # jr.opt.services.kanshi.enable = true; # Enables the kanshi service
 
