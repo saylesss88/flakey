@@ -22,6 +22,12 @@
     warn-dirty = false  # Silence flakey warnings
   '';
 
+  services.getty = {
+    # Single tty (safer)
+    autologinOnce = true;
+    autologinUser = "jr";
+  };
+
   hardware.graphics.enable = true;
   # Use the systemd-boot EFI boot loader.
   boot = {

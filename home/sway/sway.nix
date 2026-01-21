@@ -56,7 +56,7 @@ in
 
       input * {
         repeat_delay 300
-        repeat_rate 50
+        repeat_rate 25
         xkb_options caps:escape
       }
       # SwayFx settings
