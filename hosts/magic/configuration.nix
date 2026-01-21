@@ -74,7 +74,6 @@
   console.font = "ter-v16n"; # Or "Lat2-Terminus16" for virtio-serial
   console.packages = with pkgs; [ terminus_font ];
   boot.kernelParams = [
-    "console=ttyS0,115200n8"
     "console=tty0"
   ];
 
