@@ -89,8 +89,6 @@
 
   environment.systemPackages = [
     pkgs.git
-    pkgs.helix
-    pkgs.nh
   ];
   programs.zsh.enable = true;
 

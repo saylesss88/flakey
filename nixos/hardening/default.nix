@@ -18,6 +18,13 @@
     pkgs.vlock
   ];
 
+  # For ssh-agent (not needed when using gpg-agent)
+  # programs.ssh = {
+  #   enable = true;
+  #   forwardAgent = true;
+  #   addKeysToAgent = "yes";
+  # };
+
   environment.memoryAllocator.provider = "graphene-hardened-light";
   networking.firewall.enable = true;
   # sudo.enable = false;
