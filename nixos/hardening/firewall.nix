@@ -5,6 +5,25 @@
 
     ruleset = ''
       table inet filter {
+        chain input {
+          type filter hook input priority 0; policy drop;
+
+          # Allow traffic from established connections (replies to things you sent)
+          ct state established,related accept
+
+          # Allow localhost traffic
+          iifname "lo" accept
+
+          # Allow SSH (Port 22)
+          # tcp dport 22 acept
+          # Allow ICMP (Ping) good for debugging
+          ip protocol icmp accept
+          ip6 nexthdr icmpv6 accept
+          }
+          # FORWARDING (Router stuff - Drop by default)
+          chain forward {
+            type filter hook forward priority 0; policy drop;
+          }
         chain output {
           type filter hook output priority 0; policy accept;
 
@@ -19,6 +38,7 @@
           # ps -o uid,user,pid,cmd -C dnscrypt-proxy
           meta skuid 62582 udp dport { 443, 853 } accept
           meta skuid 62582 tcp dport { 443, 853 } accept
+          ip daddr { 1.1.1.1, 1.0.0.1 } udp dport 53 accept
 
           # Block all other outbound DNS
           udp dport { 53, 853 } drop
