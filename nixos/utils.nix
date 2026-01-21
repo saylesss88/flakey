@@ -26,6 +26,7 @@ in
       pkgs.fzf
       pkgs.fastfetch
       pkgs.mcfly
+      pkgs.dig
       # pkgs.direnv
       # pkgs.element-desktop
       pkgs.pinentry-gnome3

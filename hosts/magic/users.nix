@@ -11,7 +11,7 @@
     uid = 1000;
     openssh = {
       authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEUpPGBjTU900F2h8xqgpx8Tty8tdeqnz3n6QCaF3NQQ (none)"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEUpPGBjTU900F2h8xqgpx8Tty8tdeqnz3n6QCaF3NQQ"
       ];
     };
     extraGroups = lib.mkForce [
@@ -24,8 +24,8 @@
       zoxide
       #  thunderbird
     ];
-    # shell = pkgs.zsh;
-    shell = pkgs.nushell;
+    shell = pkgs.zsh;
+    # shell = pkgs.nushell;
     # hashedPasswordFile = config.sops.secrets.password_hash.path;
     # hashedPasswordFile = "/persist/etc/nixos-secrets/passwords/jr";
     initialHashedPassword = "$y$j9T$j7zw6zck7t1O7m8sdkkRi0$.3NZqK2GmKZnivtDph8.aq/G08IUOF4ghhpwecTCTZ9";

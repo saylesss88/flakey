@@ -99,6 +99,9 @@
     utils.enable = true;
     nix.enable = true;
     zram.enable = true;
+    security = {
+      openssh.enable = true;
+    };
   };
 
   # networking.hostName = "nixos"; # Define your hostname.
