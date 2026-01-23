@@ -14,7 +14,7 @@ _: {
           iifname "lo" accept
 
           # Allow SSH (Port 2222)
-          tcp dport 2222 accept
+          # tcp dport 2222 accept
           # Allow ICMP (Ping) good for debugging
           ip protocol icmp accept
           ip6 nexthdr icmpv6 accept
@@ -49,7 +49,7 @@ _: {
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [
-      2222
+      # 2222
       # Ports open for inbound connections.
       # Limit these to reduce the attack surface.
 

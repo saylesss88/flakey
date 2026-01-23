@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   hasIPv6Internet = true;
   StateDirName = "dnscrypt-proxy";
@@ -16,12 +21,6 @@ in
 
   services.resolved.enable = lib.mkForce false;
 
-  systemd.tmpfiles.rules = [
-    "d ${blocklistDir} 0750 dnscrypt-proxy dnscrypt-proxy -"
-    "f ${blocklistDir}/domains-allowlist.txt 0640 dnscrypt-proxy dnscrypt-proxy -"
-  ];
-
-  # Declarative list of blocklist source URLs
   environment.etc."dnscrypt-proxy/blocklists/sources.txt".text = ''
     https://raw.githubusercontent.com/nextdns/cname-cloaking-blocklist/master/domains
     https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
@@ -30,41 +29,34 @@ in
     https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/tif-onlydomains.txt
   '';
 
-  systemd.packages = [ pkgs.dnscrypt-proxy ];
-
   systemd.services.dnscrypt-filterlist-update = {
     description = "DNSCrypt Filterlist Update";
     wantedBy = [ "multi-user.target" ];
-    requires = [
-      "network-online.target"
-      "var-lib-dnscrypt-proxy.mount"
-    ];
-    after = [
-      "network-online.target"
-      "var-lib-dnscrypt-proxy.mount"
-    ];
+    requires = [ "network-online.target" ];
+    after = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
-      StateDirectory = StateDirName; # This is fine
-      # No WorkingDirectory needed
-      ExecStart = [
-        "${pkgs.bash}/bin/bash"
-        "-c"
-        ''
-          mkdir -p ${blocklistDir}
-          cd ${StatePath}
-          ${pkgs.coreutils}/bin/cat /etc/dnscrypt-proxy/blocklists/sources.txt \
-            | ${pkgs.findutils}/bin/xargs -I {} \
-                ${pkgs.dnscrypt-proxy}/bin/generate-domains-blocklist \
-                -b {} -a ${blocklistDir}/domains-allowlist.txt \
-                -o ${blocklistDir}/blocklist.txt
-        ''
-        "${pkgs.coreutils}/bin/sleep"
-        "2"
-        "${pkgs.systemd}/bin/systemctl"
-        "restart"
-        "dnscrypt-proxy.service"
-      ];
+      User = "root";
+      StateDirectory = StateDirName;
+      ExecStart = "${pkgs.bash}/bin/bash -c ''
+        mkdir -p ${blocklistDir}
+        cd ${blocklistDir}
+        touch domains-allowlist.txt
+        rm -f temp.txt merged.txt
+        > temp.txt
+        echo 'Fetching blocklists...'
+        while read -r url; do
+          ${pkgs.curl}/bin/curl -sfL --max-time 30 \"$url\" >> temp.txt 2>/dev/null || echo \"Failed to fetch $url\"
+        done < /etc/dnscrypt-proxy/blocklists/sources.txt
+        ${pkgs.coreutils}/bin/sort -u temp.txt > merged.txt
+        ${pkgs.dnscrypt-proxy}/bin/generate-domains-blocklist \
+          -b merged.txt \
+          -a domains-allowlist.txt \
+          -o blocklist.txt
+        chmod 644 blocklist.txt domains-allowlist.txt
+        rm -f temp.txt merged.txt
+        ${pkgs.systemd}/bin/systemctl --no-block try-reload-or-restart dnscrypt-proxy.service
+      ''";
     };
   };
 
@@ -74,7 +66,7 @@ in
     timerConfig = {
       OnBootSec = "15min";
       OnUnitActiveSec = "5h";
-      Persistent = true; # Run missed timers on boot
+      Persistent = true;
     };
   };
 
@@ -93,7 +85,6 @@ in
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
         cache_file = "${StatePath}/public-resolvers.md";
       };
-
       sources.relays = {
         urls = [
           "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md"
@@ -102,7 +93,6 @@ in
         cache_file = "${StatePath}/relays.md";
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
       };
-
       sources.odoh-servers = {
         urls = [
           "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/odoh-servers.md"
@@ -111,7 +101,6 @@ in
         cache_file = "${StatePath}/odoh-servers.md";
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
       };
-
       sources.odoh-relays = {
         urls = [
           "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/odoh-relays.md"
@@ -120,13 +109,10 @@ in
         cache_file = "${StatePath}/odoh-relays.md";
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
       };
-
       server_names = [
         "odoh-cloudflare"
         "odoh-snowstorm"
       ];
-
-      # This creates the [anonymized_dns] section in dnscrypt-proxy.toml
       anonymized_dns = {
         skip_incompatible = true;
         routes = [
@@ -140,12 +126,9 @@ in
           }
         ];
       };
-
       ipv6_servers = hasIPv6Internet;
       block_ipv6 = !hasIPv6Internet;
-      # blocked_names.blocked_names_file = "${blocklist_txt}";
-      blocked_names.blocked_names_file = "${blocklistDir}/blocklist.txt"; # Only here
-
+      blocked_names.blocked_names_file = "${blocklistDir}/blocklist.txt";
       require_dnssec = true;
       require_nolog = false;
       require_nofilter = false;
@@ -154,14 +137,11 @@ in
     };
   };
 
-  # This creates /var/lib/dnscrypt-proxy with correct permissions
-  # systemd.services.dnscrypt-proxy.serviceConfig.StateDirectory = StateDirName;
-  systemd.services.dnscrypt-proxy.serviceConfig = {
-    # Ensure it runs after the persistence mount
-    Requires = [ "var-lib-dnscrypt-proxy.mount" ];
-    After = [
-      "var-lib-dnscrypt-proxy.mount"
-      "network-online.target"
-    ];
+  # Prevent restart during switch to avoid DNS loss during rebuilds
+  systemd.services.dnscrypt-proxy = {
+    restartIfChanged = false;
+    reloadIfChanged = true;
+    requires = [ "network-online.target" ];
+    after = [ "network-online.target" ];
   };
 }
