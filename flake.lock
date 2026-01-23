@@ -3,7 +3,7 @@
     "adguard": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-POg5CplkZZ4jr5JLM73aPYqdwnUbDQtpjc7j2gblIok=",
+        "narHash": "sha256-gvIneoHS/c8nsfIq0udjYo1qd6XR+4yyg7h0qboe1jo=",
         "type": "file",
         "url": "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt"
       },
@@ -206,7 +206,7 @@
     "hagezi": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-KK5vUHs2xjO3Owlew/TFSVBMkmQA3Xry7ZEU+YY+HfI=",
+        "narHash": "sha256-U25xVLUf3TR20inXETBvktjlE3fFvoKOmORHKgT6ZSk=",
         "type": "file",
         "url": "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro-onlydomains.txt"
       },
@@ -222,11 +222,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769102673,
-        "narHash": "sha256-/qvRFjn1s3bIJdSKG6IpaE6ML3j9anQKUqGhmt4Qe+E=",
+        "lastModified": 1769132734,
+        "narHash": "sha256-gmU9cRplrQWqoback9PgQX7Dlsdx8JlhlVZwf0q1F7E=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b0491fe55680bd19be8e74847969dad9d7784658",
+        "rev": "d055b309a6277343cb1033a11d7500f0a0f669fc",
         "type": "github"
       },
       "original": {
@@ -487,11 +487,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1769106545,
-        "narHash": "sha256-l915dxV66gh3BN1L5dBjJ9BasidFqR4dCSvqyW72vmU=",
+        "lastModified": 1769107853,
+        "narHash": "sha256-dzhPXgpSMKZp5ymVlK3RmeQTumS3V1ezFvXYqTKRjZ4=",
         "owner": "saylesss88",
         "repo": "rmatrix-snowfall",
-        "rev": "762c625fbd700bcb544b7878a85c23c6c5b1c96d",
+        "rev": "3567320168c45f5e15650d0a090c6d32f90cc245",
         "type": "github"
       },
       "original": {

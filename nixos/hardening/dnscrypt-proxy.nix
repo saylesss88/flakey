@@ -4,7 +4,8 @@
   lib,
   inputs,
   ...
-}: let
+}:
+let
   blocklist_base = builtins.readFile inputs.adguard;
   extraBlocklist = builtins.readFile inputs.hagezi;
   blocklist_txt = pkgs.writeText "blocklist.txt" ''
@@ -14,7 +15,8 @@
   hasIPv6Internet = true;
   StateDirName = "dnscrypt-proxy"; # Used for systemd StateDirectory
   StatePath = "/var/lib/${StateDirName}";
-in {
+in
+{
   networking = {
     nameservers = [
       "127.0.0.1"
@@ -75,11 +77,11 @@ in {
         routes = [
           {
             server_name = "odoh-snowstorm";
-            via = ["odohrelay-crypto-sx"];
+            via = [ "odohrelay-crypto-sx" ];
           }
           {
             server_name = "odoh-cloudflare";
-            via = ["odohrelay-crypto-sx"];
+            via = [ "odohrelay-crypto-sx" ];
           }
         ];
       };

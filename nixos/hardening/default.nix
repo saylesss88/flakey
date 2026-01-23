@@ -10,7 +10,7 @@
     ./modprobe.nix
     ./openSSH.nix
     ./auditd.nix
-    # ./dnscrypt-proxy.nix
+    ./dnscrypt-proxy.nix
     # ./firewall.nix
     # ./flatpak.nix
   ];
@@ -33,6 +33,7 @@
   environment.memoryAllocator.provider = "graphene-hardened-light";
   networking.firewall.enable = true;
   security = {
+    run0.enableSudoAlias = true;
     sudo.enable = false;
     polkit.enable = true;
   };
@@ -52,8 +53,8 @@
       # umount.setuid = lib.mkForce false;
       pkexec.setuid = lib.mkForce false;
       su.setuid = lib.mkForce false;
-      sudo.setuid = lib.mkForce false;
-      sudoedit.setuid = lib.mkForce false;
+      # sudo.setuid = lib.mkForce false;
+      # sudoedit.setuid = lib.mkForce false;
       sg.setuid = lib.mkForce false;
       newgrp.setuid = lib.mkForce false;
       bwrap = {
