@@ -10,12 +10,13 @@
     ./modprobe.nix
     ./openSSH.nix
     ./auditd.nix
-    ./dnscrypt-proxy.nix
-    ./firewall.nix
+    # ./dnscrypt-proxy.nix
+    # ./firewall.nix
     # ./flatpak.nix
   ];
   environment.systemPackages = [
     pkgs.vlock
+    pkgs.pam_gnupg
   ];
 
   # For ssh-agent (not needed when using gpg-agent)
@@ -24,11 +25,15 @@
   #   forwardAgent = true;
   #   addKeysToAgent = "yes";
   # };
+  security.pam.services.login.gnupg = {
+    enable = true;
+    noAutostart = true; # Let Home Manager handle agent
+  };
 
   environment.memoryAllocator.provider = "graphene-hardened-light";
   networking.firewall.enable = true;
-  # sudo.enable = false;
   security = {
+    sudo.enable = false;
     polkit.enable = true;
   };
   xdg.portal.wlr.enable = false;

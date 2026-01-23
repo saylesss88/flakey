@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   options = {
     custom.gpg = {
       enable = lib.mkEnableOption {
@@ -27,9 +26,9 @@
       };
 
       ## We will put our keygrip here
-      gpg-agent.sshKeys = [ "03898959F91764116D9A85BA44F99C78083C8767" ];
+      gpg-agent.sshKeys = ["03898959F91764116D9A85BA44F99C78083C8767"];
     };
-    home.packages = [ pkgs.gnupg ];
+    home.packages = [pkgs.gnupg];
     programs = {
       gpg = {
         ## Enable GnuPG

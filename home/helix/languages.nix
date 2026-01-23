@@ -1,10 +1,9 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.helix = {
     languages = {
       language-server.biome = {
         command = "biome";
-        args = [ "lsp-proxy" ];
+        args = ["lsp-proxy"];
       };
 
       # language-server.gpt = {
@@ -38,7 +37,7 @@
           "server"
           "component"
         ];
-        cargo.diagnostics.disables = [ "unresolved-proc-macro" ];
+        cargo.diagnostics.disables = ["unresolved-proc-macro"];
         cargo.allFeatures = true;
       };
 
@@ -68,7 +67,7 @@
 
       language-server.harper-ls = {
         command = "harper-ls";
-        args = [ "--stdio" ];
+        args = ["--stdio"];
       };
 
       language-server.harper-ls.config.harper-ls = {
@@ -118,7 +117,7 @@
           language-servers = [
             {
               name = "vscode-json-language-server";
-              except-features = [ "format" ];
+              except-features = ["format"];
             }
             "biome"
           ];
@@ -139,7 +138,7 @@
           language-servers = [
             {
               name = "vscode-json-language-server";
-              except-features = [ "format" ];
+              except-features = ["format"];
             }
             "biome"
           ];
@@ -194,7 +193,7 @@
             "gpt"
             # "codeium"
           ];
-          file-types = [ "nix" ];
+          file-types = ["nix"];
           formatter = {
             command = "${pkgs.nixfmt}/bin/nixfmt";
           };
@@ -220,7 +219,7 @@
           ];
           scope = "source.rust";
           injection-regex = "rs|rust";
-          file-types = [ "rs" ];
+          file-types = ["rs"];
           roots = [
             "Cargo.toml"
             "Cargo.lock"
@@ -231,7 +230,7 @@
           ];
           formatter = {
             command = "rustfmt";
-            args = [ "--edition=2024" ];
+            args = ["--edition=2024"];
           };
           comment-tokens = [
             "//"
@@ -242,16 +241,16 @@
         }
         {
           name = "git-commit";
-          language-servers = [ "scls" ];
+          language-servers = ["scls"];
         }
         {
           name = "stub";
           scope = "text.stub";
-          file-types = [ ];
-          shebangs = [ ];
-          roots = [ ];
+          file-types = [];
+          shebangs = [];
+          roots = [];
           auto-format = false;
-          language-servers = [ "scls" ];
+          language-servers = ["scls"];
         }
         {
           name = "scss";
@@ -270,7 +269,7 @@
         }
         {
           name = "toml";
-          language-servers = [ "taplo" ];
+          language-servers = ["taplo"];
           formatter = {
             command = "taplo";
             args = [
@@ -289,11 +288,11 @@
             "gpt"
             # "codeium"
           ];
-          file-types = [ "sh" ];
+          file-types = ["sh"];
         }
         {
           name = "yaml";
-          language-servers = [ "yaml-language-server" ];
+          language-servers = ["yaml-language-server"];
           formatter = {
             command = "prettier";
             args = [

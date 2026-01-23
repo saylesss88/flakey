@@ -3,12 +3,10 @@
   config,
   lib,
   ...
-}:
-let
+}: let
   cfg = config.custom.helix;
-in
-{
-  imports = [ ./languages.nix ];
+in {
+  imports = [./languages.nix];
   options.custom.helix.enable = lib.mkEnableOption "Enable Helix Module";
 
   config = lib.mkIf cfg.enable {

@@ -3,11 +3,9 @@
   config,
   inputs,
   ...
-}:
-let
+}: let
   cfg = config.custom.nix;
-in
-{
+in {
   options.custom.nix = {
     enable = lib.mkEnableOption "Enable the Nix Module";
   };

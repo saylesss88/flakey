@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "adguard": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-POg5CplkZZ4jr5JLM73aPYqdwnUbDQtpjc7j2gblIok=",
+        "type": "file",
+        "url": "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1765145449,
@@ -125,6 +137,24 @@
         "url": "https://flakehub.com/f/hercules-ci/flake-parts/0.1"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "git-hooks-nix": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -176,7 +206,7 @@
     "hagezi": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-Xt0vEFHawHA/oM8rgDmhsxWRtsrAP1lXHoXWvnkJuC8=",
+        "narHash": "sha256-KK5vUHs2xjO3Owlew/TFSVBMkmQA3Xry7ZEU+YY+HfI=",
         "type": "file",
         "url": "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro-onlydomains.txt"
       },
@@ -192,11 +222,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768997641,
-        "narHash": "sha256-7vT8oS6ra/dJaZ6ShvZiPtlZ40XI7CTSb2PmuNPMiXE=",
+        "lastModified": 1769102673,
+        "narHash": "sha256-/qvRFjn1s3bIJdSKG6IpaE6ML3j9anQKUqGhmt4Qe+E=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "27b60942b7285824937f8c2c05021370f6fc5904",
+        "rev": "b0491fe55680bd19be8e74847969dad9d7784658",
         "type": "github"
       },
       "original": {
@@ -384,12 +414,12 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1768886240,
-        "narHash": "sha256-C2TjvwYZ2VDxYWeqvvJ5XPPp6U7H66zeJlRaErJKoEM=",
-        "rev": "80e4adbcf8992d3fd27ad4964fbb84907f9478b0",
-        "revCount": 930839,
+        "lastModified": 1769018530,
+        "narHash": "sha256-MJ27Cy2NtBEV5tsK+YraYr2g851f3Fl1LpNHDzDX15c=",
+        "rev": "88d3861acdd3d2f0e361767018218e51810df8a1",
+        "revCount": 931542,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.930839%2Brev-80e4adbcf8992d3fd27ad4964fbb84907f9478b0/019bdece-8709-77ea-a1d6-9d410df27131/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.931542%2Brev-88d3861acdd3d2f0e361767018218e51810df8a1/019be60b-f6ea-74ec-ab74-e960f412a787/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -397,6 +427,22 @@
       }
     },
     "nixpkgs_5": {
+      "locked": {
+        "lastModified": 1769018530,
+        "narHash": "sha256-MJ27Cy2NtBEV5tsK+YraYr2g851f3Fl1LpNHDzDX15c=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "88d3861acdd3d2f0e361767018218e51810df8a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_6": {
       "locked": {
         "lastModified": 1767364772,
         "narHash": "sha256-fFUnEYMla8b7UKjijLnMe+oVFOz6HjijGGNS1l7dYaQ=",
@@ -410,18 +456,6 @@
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
-      }
-    },
-    "oisd": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-lZpNTU7/sTBuwOPjExCwJLG8akXeYzPF6ITKO3ZziaQ=",
-        "type": "file",
-        "url": "https://big.oisd.nl/domainswild"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://big.oisd.nl/domainswild"
       }
     },
     "pre-commit": {
@@ -447,8 +481,28 @@
         "type": "github"
       }
     },
+    "rmatrix-snowfall": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs_5"
+      },
+      "locked": {
+        "lastModified": 1769106545,
+        "narHash": "sha256-l915dxV66gh3BN1L5dBjJ9BasidFqR4dCSvqyW72vmU=",
+        "owner": "saylesss88",
+        "repo": "rmatrix-snowfall",
+        "rev": "762c625fbd700bcb544b7878a85c23c6c5b1c96d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "saylesss88",
+        "repo": "rmatrix-snowfall",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "adguard": "adguard",
         "determinate": "determinate",
         "hagezi": "hagezi",
         "home-manager": "home-manager",
@@ -456,9 +510,9 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-stable": "nixpkgs-stable",
-        "oisd": "oisd",
+        "rmatrix-snowfall": "rmatrix-snowfall",
         "sops-nix": "sops-nix",
-        "systems": "systems",
+        "systems": "systems_2",
         "treefmt-nix": "treefmt-nix",
         "wallpapers": "wallpapers"
       }
@@ -506,6 +560,21 @@
     },
     "systems": {
       "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
         "lastModified": 1689347949,
         "narHash": "sha256-12tWmuL2zgBgZkdoB6qXZsgJEH9LR3oUgpaQq2RbI80=",
         "owner": "nix-systems",
@@ -521,7 +590,7 @@
     },
     "treefmt-nix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_6"
       },
       "locked": {
         "lastModified": 1768158989,

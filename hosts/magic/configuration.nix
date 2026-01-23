@@ -6,8 +6,7 @@
   lib,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -50,6 +49,7 @@
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/var/lib/sbctl";
+    configurationLimit = 10;
   };
 
   services.qemuGuest.enable = true;
@@ -66,7 +66,7 @@
     };
   };
 
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = ["zfs"];
   boot.zfs.devNodes = "/dev/";
   services.zfs = {
     autoScrub.enable = true;
@@ -75,10 +75,10 @@
     # autoSnapshot = true;
   };
 
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = ["kvm-amd"];
   # boot.kernelParams = ["console=tty1"];
   console.font = "ter-v16n"; # Or "Lat2-Terminus16" for virtio-serial
-  console.packages = with pkgs; [ terminus_font ];
+  console.packages = with pkgs; [terminus_font];
   boot.kernelParams = [
     "console=tty0"
   ];
@@ -101,6 +101,7 @@
     magic.locale = "en_US.UTF-8";
     utils.enable = true;
     nix.enable = true;
+    cachix.enable = false;
     zram.enable = true;
     security = {
       openssh.enable = true;

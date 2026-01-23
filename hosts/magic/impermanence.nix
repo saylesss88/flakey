@@ -2,9 +2,8 @@
   inputs,
   lib,
   ...
-}:
-{
-  imports = [ inputs.impermanence.nixosModules.impermanence ];
+}: {
+  imports = [inputs.impermanence.nixosModules.impermanence];
   boot.initrd.postMountCommands = lib.mkAfter ''
     zfs rollback -r rpool/local/root@blank
   '';
@@ -13,12 +12,14 @@
     directories = [
       "/var/lib/sbctl"
       "/var/lib/nixos"
-      "/var/lib/libvirt/images"
-      "/var/lib/libvirt/networks"
-      "/var/log/libvirt"
+      # "/var/lib/libvirt/images"
+      # "/var/lib/libvirt/networks"
+      # "/var/log/libvirt"
+      # "/var/lib/dnscrypt-proxy"
     ];
     files = [
-      "/var/lib/libvirt/libvirt.conf"
+      # "/var/lib/libvirt/libvirt.conf"
+      # "/var/lib/dnscrypt-proxy/blocklist.txt"
     ];
   };
   fileSystems."/persist" = {

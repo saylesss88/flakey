@@ -2,11 +2,9 @@
   pkgs,
   inputs,
   ...
-}:
-let
+}: let
   mod = "Mod4";
-in
-{
+in {
   imports = [
     ./keybinds.nix
     ./fuzzel.nix

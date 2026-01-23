@@ -2,12 +2,11 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
-}:
-let
+}: let
   cfg = config.custom.utils;
-in
-{
+in {
   options.custom.utils = {
     enable = lib.mkEnableOption "Enable custom utils Package Set";
   };
@@ -15,6 +14,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       # pkgs.vim
+      inputs.rmatrix-snowfall.packages.${pkgs.system}.default
       pkgs.bat
       pkgs.emote
       pkgs.acl
