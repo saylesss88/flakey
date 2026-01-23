@@ -45,6 +45,7 @@
   services.displayManager.autoLogin.enable = false;
 
   security = {
+    protectKernelImage = true;
     wrappers = {
       # Remove unnecessary SUID binaries
       # fusermount.setuid = lib.mkForce false;
