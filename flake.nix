@@ -13,6 +13,7 @@
     # sops-nix.url = "github:Mic92/sops-nix";
     # sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     # determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    persway.url = "github:saylesss88/persway";
     systems.url = "github:nix-systems/default-linux";
     # rmatrix-snowfall.url = "github:saylesss88/rmatrix-snowfall";
     # lanzaboote = {

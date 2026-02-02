@@ -15,6 +15,7 @@ in {
     environment.systemPackages = [
       # pkgs.vim
       # inputs.rmatrix-snowfall.packages.${pkgs.system}.default
+      inputs.persway.packages.${pkgs.system}.default
       pkgs.bat
       pkgs.emote
       pkgs.acl
