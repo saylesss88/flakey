@@ -35,9 +35,9 @@
     else {};
 in
   default-set
-  |> builtins.attrNames
-  |> builtins.map (key: {
-    name = key;
-    value = convert-color default-set.${key};
-  })
-  |> builtins.listToAttrs
+  # |> builtins.attrNames
+  # |> builtins.map (key: {
+  #   name = key;
+  #   value = convert-color default-set.${key};
+  # })
+  # |> builtins.listToAttrs

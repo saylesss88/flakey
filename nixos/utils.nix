@@ -14,7 +14,7 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       # pkgs.vim
-      inputs.rmatrix-snowfall.packages.${pkgs.system}.default
+      # inputs.rmatrix-snowfall.packages.${pkgs.system}.default
       pkgs.bat
       pkgs.emote
       pkgs.acl

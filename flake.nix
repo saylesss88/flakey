@@ -2,23 +2,23 @@
   description = "NixOS configuration";
 
   inputs = {
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+    # nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager.url = "github:nix-community/home-manager"; # Stable, flakehub-free
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # home-manager.url = "github:nix-community/home-manager";
     # home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # flatpaks.url = "github:in-a-dil-emma/declarative-flatpak/latest";
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    # sops-nix.url = "github:Mic92/sops-nix";
+    # sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    # determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     systems.url = "github:nix-systems/default-linux";
-    rmatrix-snowfall.url = "github:saylesss88/rmatrix-snowfall";
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.0.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # rmatrix-snowfall.url = "github:saylesss88/rmatrix-snowfall";
+    # lanzaboote = {
+    #   url = "github:nix-community/lanzaboote/v1.0.0";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     adguard = {
       url = "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt";
       flake = false;
@@ -46,98 +46,101 @@
     impermanence.url = "github:nix-community/impermanence";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    # lix,
-    # lix-module,
-    treefmt-nix,
-    systems,
-    # flatpaks,
-    ...
-  } @ inputs: let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {system = "x86_64-linux";};
-    # inherit (pkgs.stdenv) system;
-    host = "magic";
-    username = "jr";
-    lib = pkgs.lib // home-manager.lib;
-    forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
-    pkgsFor = lib.genAttrs (import systems) (
-      system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      # lix,
+      # lix-module,
+      treefmt-nix,
+      systems,
+      # flatpaks,
+      ...
+    }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      # inherit (pkgs.stdenv) system;
+      host = "magic";
+      username = "jr";
+      lib = pkgs.lib // home-manager.lib;
+      forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
+      pkgsFor = lib.genAttrs (import systems) (
+        system:
         import nixpkgs {
           inherit system;
           config = {
             allowUnfree = false;
           };
         }
-    );
-    getTreefmtEval = system: treefmt-nix.lib.evalModule pkgsFor.${system} ./lib/treefmt.nix;
-    myLib = import ./lib/default.nix {inherit (nixpkgs) lib;};
-    nixosModules = import ./nixos;
-    homeManagerModules = import ./home;
-    # overlays = import ./lib/overlay.nix {inherit (inputs) devour-flake;};
-    caches = {
-      nix.settings = {
-        builders-use-substitutes = true;
-        substituters = ["https://cache.nixos.org"];
-        trusted-public-keys = [
-          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      );
+      getTreefmtEval = system: treefmt-nix.lib.evalModule pkgsFor.${system} ./lib/treefmt.nix;
+      myLib = import ./lib/default.nix { inherit (nixpkgs) lib; };
+      nixosModules = import ./nixos;
+      homeManagerModules = import ./home;
+      # overlays = import ./lib/overlay.nix {inherit (inputs) devour-flake;};
+      caches = {
+        nix.settings = {
+          builders-use-substitutes = true;
+          substituters = [ "https://cache.nixos.org" ];
+          trusted-public-keys = [
+            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+          ];
+        };
+      };
+    in
+    {
+      inherit lib;
+      # Formatter for nix fmt
+      formatter = forEachSystem (
+        pkgs: (getTreefmtEval pkgs.stdenv.hostPlatform.system).config.build.wrapper
+      );
+      # Style check for CI
+      # This creates checks.x86_64-linux.style etc.
+      checks = forEachSystem (pkgs: {
+        style = (getTreefmtEval pkgs.stdenv.hostPlatform.system).config.build.check self;
+        # You can also expose specific custom checks like this:
+        # no-todos = (getTreefmtEval pkgs.system).config.checks.no-todos.check self;
+      });
+      # Development shell
+      devShells.${system}.default = import ./lib/dev-shell.nix { inherit inputs; };
+      nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
+        inherit system;
+        pkgs = pkgsFor.${system};
+        specialArgs = {
+          inherit
+            inputs
+            host
+            username
+            myLib
+            ;
+        };
+        modules = [
+          ./hosts/${host}/configuration.nix
+          home-manager.nixosModules.home-manager
+          # lix-module.nixosModules.default
+          nixosModules # add all modules from ./nixos
+          caches
+          # inputs.lanzaboote.nixosModules.lanzaboote
+          # inputs.sops-nix.nixosModules.sops
+          # inputs.determinate.nixosModules.default
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "bak";
+            home-manager.users.jr = ./hosts/${host}/home.nix;
+            home-manager.extraSpecialArgs = {
+              inherit
+                inputs
+                host
+                username
+                myLib
+                homeManagerModules
+                ;
+            };
+          }
         ];
       };
     };
-  in {
-    inherit lib;
-    # Formatter for nix fmt
-    formatter = forEachSystem (
-      pkgs: (getTreefmtEval pkgs.stdenv.hostPlatform.system).config.build.wrapper
-    );
-    # Style check for CI
-    # This creates checks.x86_64-linux.style etc.
-    checks = forEachSystem (pkgs: {
-      style = (getTreefmtEval pkgs.stdenv.hostPlatform.system).config.build.check self;
-      # You can also expose specific custom checks like this:
-      # no-todos = (getTreefmtEval pkgs.system).config.checks.no-todos.check self;
-    });
-    # Development shell
-    devShells.${system}.default = import ./lib/dev-shell.nix {inherit inputs;};
-    nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
-      inherit system;
-      pkgs = pkgsFor.${system};
-      specialArgs = {
-        inherit
-          inputs
-          host
-          username
-          myLib
-          ;
-      };
-      modules = [
-        ./hosts/${host}/configuration.nix
-        home-manager.nixosModules.home-manager
-        # lix-module.nixosModules.default
-        nixosModules # add all modules from ./nixos
-        caches
-        # inputs.lanzaboote.nixosModules.lanzaboote
-        inputs.sops-nix.nixosModules.sops
-        inputs.determinate.nixosModules.default
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "bak";
-          home-manager.users.jr = ./hosts/${host}/home.nix;
-          home-manager.extraSpecialArgs = {
-            inherit
-              inputs
-              host
-              username
-              myLib
-              homeManagerModules
-              ;
-          };
-        }
-      ];
-    };
-  };
 }

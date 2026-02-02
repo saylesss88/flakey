@@ -12,8 +12,8 @@
     ./hardware-configuration.nix
     ./users.nix
     ./impermanence.nix
-    ./sops.nix
-    inputs.lanzaboote.nixosModules.lanzaboote
+    # ./sops.nix
+    # inputs.lanzaboote.nixosModules.lanzaboote
   ];
   environment.etc."nix/nix.custom.conf".text = ''
     extra-substituters = https://cache.flakehub.com
@@ -36,21 +36,21 @@
     };
     loader = {
       systemd-boot = {
-        # enable = true;
-        enable = lib.mkForce false;
-        # consoleMode = "max";
-        # editor = false;
-        # configurationLimit = 25;
+        enable = true;
+        # enable = lib.mkForce false;
+        consoleMode = "max";
+        editor = false;
+        configurationLimit = 25;
       };
-      # efi.canTouchEfiVariables = true;
-      # efi.efiSysMountPoint = "/boot";
+      efi.canTouchEfiVariables = true;
+      efi.efiSysMountPoint = "/boot";
     };
   };
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/var/lib/sbctl";
-    configurationLimit = 10;
-  };
+  # boot.lanzaboote = {
+  #   enable = true;
+  #   pkiBundle = "/var/lib/sbctl";
+  #   configurationLimit = 10;
+  # };
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
@@ -59,8 +59,7 @@
   systemd.services.zfs-mount.enable = false;
 
   boot.initrd.luks.devices = {
-    cryptroot = {
-      device = "/dev/disk/by-uuid/a122e783-4aab-48de-9142-7c393c977e81";
+    cryptroot = { device = "/dev/disk/by-uuid/b0333bca-48d1-4f2f-a775-a74af50edd46";
       allowDiscards = true;
       preLVM = true;
     };
@@ -83,7 +82,7 @@
     "console=tty0"
   ];
 
-  networking.hostId = "2060abea";
+  networking.hostId = "ce02bb0b";
 
   boot.initrd.systemd.enable = false;
 

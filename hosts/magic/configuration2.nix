@@ -1,139 +1,150 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
+{ config, lib, pkgs, ... }:
+
 {
-  pkgs,
-  inputs,
-  ...
-}: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ./users.nix
-    inputs.mdbook-nix-repl.nixosModules.default
-    ./sops.nix
-    # ./nix-repl-server.nix
-  ];
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
 
-  custom.nix-repl-server = {
-    enable = true;
-    port = 8080; # Optional, defaults to 8080
-    tokenFile = "/etc/nix-repl-server.env";
-  };
-
-  # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
-  boot.loader.grub.useOSProber = false;
-  boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
-    tmp = {
-      useTmpfs = true;
-      tmpfsSize = "50%";
+   boot.loader = {
+    systemd-boot = {
+      enable = true;
+      consoleMode = "max";
+      editor = false;
+    };
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
     };
   };
 
-  # Setup keyfile
-  # boot.initrd.secrets = {
-  #   "/boot/crypto_keyfile.bin" = null;
-  # };
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.devNodes = "/dev/";       # Critical for VMs
+  # Not needed with LUKS
+  boot.zfs.requestEncryptionCredentials = false;
+  # systemd handles mounting
+  systemd.services.zfs-mount.enable = false;
 
-  nix.settings.http-connections = 100;
-  systemd.services.nix-daemon.serviceConfig.MemoryMax = "8G";
+  services.zfs = {
+    autoScrub.enable = true;
+    # periodically runs `zpool trim`
+    trim.enable = true;
+    # autoSnapshot = true;
+  };
 
-  # boot.loader.grub.enableCryptodisk = true;
+   boot.initrd.luks.devices = {
+     cryptroot = {
+    # replace uuid# with output of UUID # from `sudo blkid /dev/vda2`
+       device = "/dev/disk/by-uuid/b0333bca-48d1-4f2f-a775-a74af50edd46";
+       allowDiscards = true;
+       preLVM = true;
+     };
+   };
 
-  # boot.initrd.luks.devices."luks-457e04f3-7eb9-4223-a07b-b7b384b20575".keyFile = "/boot/crypto_keyfile.bin";
   networking.hostName = "magic"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  networking.hostId = "ce02bb0b";
+
+  users.users.root.initialPassword = "changeme";
+
+  boot.kernelParams = [ "console=tty1" ];
+
+  # ------------------------------------------------------------------
+  #  Users
+  # ------------------------------------------------------------------
+
+  users.mutableUsers = false;
+
+  # Change `your-user`
+  users.users.jr = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    group = "jr";
+    # :r /tmp/pass.txt:
+  initialHashedPassword = "$y$j9T$3mGOsuMNLfzJmt/H24mlS.$4.Moomit/bqNaAhHjT7OOK3ozlNAcvFHAWFVSV0MX8B";
+  };
+
+  # This enables `chown -R your-user:your-user`
+  users.groups.jr = { };
+
+  # ------------------------------------------------------------------
+  #  (Optional) Helpful for recovery situations
+  # ------------------------------------------------------------------
+  users.users.admin = {
+   isNormalUser = true;
+   description = "admin account";
+   extraGroups = [ "wheel" ];
+   group = "admin";
+  initialHashedPassword = "$y$j9T$3mGOsuMNLfzJmt/H24mlS.$4.Moomit/bqNaAhHjT7OOK3ozlNAcvFHAWFVSV0MX8B";
+
+ };
+
+ users.groups.admin = { };
+
+
+  # Configure network connections interactively with nmcli or nmtui.
+  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
-    git
-    helix
-    yazi
-  ];
-
-  # environment.memoryAllocator.provider = "graphene-hardened-light";
-  boot.kernelModules = ["kvm-amd"];
-
-  custom = {
-    magic.enable = true;
-    greetd.enable = true;
-    thunar.enable = true;
-    magic.timezone = "America/New_York";
-    magic.hostname = "magic";
-    magic.locale = "en_US.UTF-8";
-    # drivers.amdgpu.enable = true;
-    utils.enable = true;
-    nix.enable = true;
-    zram.enable = true;
-    security = {
-      auditd.enable = true;
-      openssh.enable = true;
-      systemd.enable = true;
-      security.enable = true;
-      modprobe.enable = true;
-    };
-  };
-  # Explicitly disable wireless adapters
-  # networking.wireless.enable = false; # Enables wireless support via wpa_supplicant.
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # Select internationalisation properties.
+  # i18n.defaultLocale = "en_US.UTF-8";
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  #   useXkbConfig = true; # use xkb.options in tty.
+  # };
 
-  #=====Disable Unnecessary Services for a VM======#
+  # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+
+
+  
+
+  # Configure keymap in X11
+  # services.xserver.xkb.layout = "us";
+  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+
   # Enable CUPS to print documents.
-  services.printing.enable = false;
+  # services.printing.enable = true;
 
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  services = {
-    pipewire = {
-      enable = true;
-      alsa.enable = false;
-      alsa.support32Bit = false;
-      pulse.enable = true;
-    };
-    avahi.enable = false;
-    geoclue2.enable = false;
+  # Enable sound.
+  # services.pulseaudio.enable = true;
+  # OR
+  # services.pipewire = {
+  #   enable = true;
+  #   pulse.enable = true;
+  # };
 
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-  networking.modemmanager.enable = false;
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  # services.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # users.users.alice = {
+  #   isNormalUser = true;
+  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+  #   packages = with pkgs; [
+  #     tree
+  #   ];
+  # };
+
+  # programs.firefox.enable = true;
+
+  # List packages installed in system profile.
+  # You can use https://search.nixos.org/ to find more packages (and options).
+  # environment.systemPackages = with pkgs; [
+  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  #   wget
+  # ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -152,19 +163,33 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  hardware.graphics.enable = true;
-  # hardware.graphics.driSupport32Bit = true;
-  # nix.settings.experimental-features = [
-  #   "nix-command"
-  #   "flakes"
-  #   "pipe-operators"
-  # ];
+  # networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  # system.copySystemConfiguration = true;
+
+  # This option defines the first version of NixOS you have installed on this particular machine,
+  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+  #
+  # Most users should NEVER change this value after the initial install, for any reason,
+  # even if you've upgraded your system to a new NixOS release.
+  #
+  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
+  # to actually do that.
+  #
+  # This value being lower than the current NixOS release does NOT mean your system is
+  # out of date, out of support, or vulnerable.
+  #
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+  # and migrated your data accordingly.
+  #
+  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+  system.stateVersion = "25.11"; # Did you read the comment?
+  fileSystems."/persist".neededForBoot = true;
+
 }
+
+
