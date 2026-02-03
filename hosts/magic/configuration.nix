@@ -59,7 +59,7 @@
   systemd.services.zfs-mount.enable = false;
 
   boot.initrd.luks.devices = {
-    cryptroot = { device = "/dev/disk/by-uuid/b0333bca-48d1-4f2f-a775-a74af50edd46";
+    cryptroot = { device = "/dev/disk/by-uuid/acf2cb3d-bec4-4d16-ac40-ea981c412683";
       allowDiscards = true;
       preLVM = true;
     };
@@ -82,7 +82,7 @@
     "console=tty0"
   ];
 
-  networking.hostId = "ce02bb0b";
+  networking.hostId = "619f315a";
 
   boot.initrd.systemd.enable = false;
 

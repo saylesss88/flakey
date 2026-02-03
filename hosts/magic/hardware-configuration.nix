@@ -19,7 +19,7 @@
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/1D62-B7BB";
+    { device = "/dev/disk/by-uuid/644A-9ABA";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
@@ -32,11 +32,13 @@
   fileSystems."/home" =
     { device = "rpool/safe/home";
       fsType = "zfs";
+      neededForBoot = true;
     };
 
   fileSystems."/persist" =
     { device = "rpool/safe/persist";
       fsType = "zfs";
+      neededForBoot = true;
     };
 
   swapDevices = [ ];

@@ -2,9 +2,11 @@
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   mod = "Mod4";
-in {
+in
+{
   imports = [
     ./keybinds.nix
     ./fuzzel.nix
@@ -18,7 +20,11 @@ in {
     config = rec {
       modifier = mod;
       terminal = "${pkgs.ghostty}/bin/ghostty";
-      # startup = [{command = "firefox";}];
+      startup = [
+        {
+          command = "persway daemon -w -e '[tiling] opacity 1' -f '[tiling] opacity 0.95; opacity 1' -l 'mark --add _prev' --default-layout spiral";
+        }
+      ];
       floating.border = 1;
       window.border = 1;
       gaps = {
